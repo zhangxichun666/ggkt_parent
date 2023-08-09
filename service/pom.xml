@@ -29,6 +29,12 @@
             <artifactId>model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--引入service_utils模块-->
+        <dependency>
+            <groupId>com.atguigu</groupId>
+            <artifactId>service_utils</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!--web 需要启动项目-->
         <dependency>

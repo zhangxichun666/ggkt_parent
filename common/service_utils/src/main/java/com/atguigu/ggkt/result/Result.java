@@ -1,57 +1,73 @@
 package com.atguigu.ggkt.result;
 
-import io.swagger.models.auth.In;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * @ClassName Result
- * @Description
- * @Author zxc
- * @Date 2023/8/10 8:28
- * @Version 1.0
+ * 全局统一返回结果类
+ *
  */
-//统一返回结果
 @Data
+@ApiModel(value = "全局统一返回结果")
 public class Result<T> {
-    private Integer code;   //状态码
-    private String message; //返回状态信息
-    private T data; //返回数据
+
+    @ApiModelProperty(value = "返回码")
+    private Integer code;
+
+    @ApiModelProperty(value = "返回消息")
+    private String message;
+
+    @ApiModelProperty(value = "返回数据")
+    private T data;
 
     public Result(){}
 
-    //成功的方法，没有data数据
-    /*public static<T> Result<T> ok(){
+    public static <T> Result<T> build(T body, Integer code, String message) {
         Result<T> result = new Result<T>();
-        result.setCode(200);
-        result.setMessage("成功");
-        return result;
-    }*/
-    //失败的方法，没有data数据
-    /*public static<T> Result<T> fail(){
-        Result<T> result = new Result<T>();
-        result.setCode(201);
-        result.setMessage("失败");
-        return result;
-    }*/
-
-    //成功的方法，有data数据
-    public static<T> Result<T> ok(T data){
-        Result<T> result = new Result<>();
-        if(data != null){
-            result.setData(data);
+        if (body != null) {
+            result.setData(body);
         }
-        result.setCode(200);
-        result.setMessage("成功");
+        result.setCode(code);
+        result.setMessage(message);
         return result;
     }
-    //失败的方法，有data数据
+
+    public static<T> Result<T> ok(){
+        return Result.ok(null);
+    }
+
+    /**
+     * 操作成功
+     * @param data  baseCategory1List
+     * @param <T>
+     * @return
+     */
+    public static<T> Result<T> ok(T data){
+        return build(data,200,"成功");
+    }
+
+    public static<T> Result<T> fail(){
+        return Result.fail(null);
+    }
+
+    /**
+     * 操作失败
+     * @param data
+     * @param <T>
+     * @return
+     */
     public static<T> Result<T> fail(T data){
-        Result<T> result = new Result<>();
-        if(data != null){
-            result.setData(data);
-        }
-        result.setCode(201);
-        result.setMessage("失败");
-        return result;
+        return build(data, 201,"失败");
+    }
+
+    public Result<T> message(String msg){
+        this.setMessage(msg);
+        return this;
+    }
+
+    public Result<T> code(Integer code){
+        this.setCode(code);
+        return this;
     }
 }

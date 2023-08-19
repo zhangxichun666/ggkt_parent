@@ -6,6 +6,7 @@ import com.atguigu.ggkt.result.Result;
 import com.atguigu.ggkt.vo.vod.TeacherQueryVo;
 import com.atguigu.ggkt.vod.service.TeacherService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +29,7 @@ import java.util.List;
 @Api(tags = "讲师管理模块")
 @RestController
 @RequestMapping("/admin/vod/teacher")
+@CrossOrigin
 public class TeacherController {
     @Autowired
     private TeacherService teacherService;
@@ -61,35 +63,48 @@ public class TeacherController {
 
     //分页查询
     @ApiOperation(value = "获取分页列表")
-    @PostMapping("{page}/{limit}")
-    public Result index(@PathVariable("page") Long page, @PathVariable("page") Long limit, @RequestBody(required = false) TeacherQueryVo teacherQueryVo){
+    @PostMapping("findQueryPage/{page}/{limit}")
+    public Result index(@PathVariable("page") Long page, @PathVariable("limit") Long limit, @RequestBody(required = false) TeacherQueryVo teacherQueryVo){
         Page<Teacher> pageParam = new Page<>(page,limit);
-        //获取条件值
-        String name = teacherQueryVo.getName();
-        Integer level = teacherQueryVo.getLevel();
-        String joinDateBegin = teacherQueryVo.getJoinDateBegin();
-        String joinDateEnd = teacherQueryVo.getJoinDateEnd();
-        //封装条件
-        QueryWrapper<Teacher> wrapper = new QueryWrapper<>();
-        if(StringUtils.isEmpty(name)){
-            wrapper.like("name",name);
+        if(teacherQueryVo == null){
+            IPage<Teacher> pageModel = teacherService.page(pageParam,null);
+            return Result.ok(pageModel);
+        }else {
+            //获取条件值
+            String name = teacherQueryVo.getName();
+            Integer level = teacherQueryVo.getLevel();
+            String joinDateBegin = teacherQueryVo.getJoinDateBegin();
+            String joinDateEnd = teacherQueryVo.getJoinDateEnd();
+            //封装条件
+            QueryWrapper<Teacher> wrapper = new QueryWrapper<>();
+            if(!StringUtils.isEmpty(name)){
+                wrapper.like("name",name);
+            }
+
+            if(!StringUtils.isEmpty(level)){
+                wrapper.eq("level",level);
+            }
+
+            if(!StringUtils.isEmpty(joinDateBegin)){
+                wrapper.ge("join_date",joinDateBegin);
+            }
+
+            if(!StringUtils.isEmpty(joinDateEnd)){
+                wrapper.le("join_date",joinDateEnd);
+            }
+
+            IPage<Teacher> pageModel = teacherService.page(pageParam, wrapper);
+
+            return Result.ok(pageModel);
+
         }
 
-        if(!StringUtils.isEmpty(level)){
-            wrapper.eq("level",level);
-        }
 
-        if(!StringUtils.isEmpty(joinDateBegin)){
-            wrapper.ge("join_date",joinDateBegin);
-        }
 
-        if(!StringUtils.isEmpty(joinDateEnd)){
-            wrapper.ge("join_date",joinDateEnd);
-        }
 
-        Page<Teacher> pageModel = teacherService.page(pageParam, wrapper);
+        //System.out.println("++++++++++++++++++++"+pageModel.toString());
 
-        return Result.ok(pageModel);
+
     }
 
     @ApiOperation(value = "新增")

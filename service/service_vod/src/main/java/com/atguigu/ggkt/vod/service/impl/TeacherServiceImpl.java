@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * 讲师 服务实现类
  * </p>
  *
- * @author atguigu
+ * @author zxc
  * @since 2023-08-09
  */
 @Service

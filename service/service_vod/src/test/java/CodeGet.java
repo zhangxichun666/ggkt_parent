@@ -22,7 +22,7 @@ public class CodeGet {
         gc.setOutputDir("D:\\ZhangXiChunPrograms\\ggkt_parent\\service\\service_vod"+"/src/main/java");
 
         gc.setServiceName("%sService");	//去掉Service接口的首字母I
-        gc.setAuthor("atguigu");
+        gc.setAuthor("zxc");
         gc.setOpen(false);
         mpg.setGlobalConfig(gc);
 
@@ -48,7 +48,7 @@ public class CodeGet {
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
 
-        strategy.setInclude("subject");
+        strategy.setInclude("course","course_description","chapter","video");
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
 

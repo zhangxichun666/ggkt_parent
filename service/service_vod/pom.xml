@@ -41,5 +41,12 @@
             <artifactId>joda-time</artifactId>
         </dependency>
 
+        <!--alibaba Excel表格导入导出-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
     </dependencies>
 </project>

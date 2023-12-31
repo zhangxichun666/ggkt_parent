@@ -34,14 +34,6 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
-    //查询所有讲师
-    /*@ApiOperation("查询所有讲师")
-    @GetMapping("findAll")
-    public List<Teacher> findAllTeacher(){
-        List<Teacher> list = teacherService.list();
-        return list;
-    }*/
-
     @ApiOperation("查询所有讲师")
     @GetMapping("findAll")
     public Result findAllTeacher(){
@@ -99,30 +91,24 @@ public class TeacherController {
 
         }
 
-
-
-
-        //System.out.println("++++++++++++++++++++"+pageModel.toString());
-
-
     }
 
     @ApiOperation(value = "新增")
-    @PostMapping("save")
+    @PostMapping("saveTeacher")
     public Result save(@RequestBody Teacher teacher){
         teacherService.save(teacher);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "获取")
-    @GetMapping("get/{id}")
+    @GetMapping("getTeacher/{id}")
     public Result get(@PathVariable Long id){
         Teacher teacher = teacherService.getById(id);
         return Result.ok(teacher);
     }
 
     @ApiOperation(value = "修改")
-    @PutMapping("update")
+    @PostMapping("updateTeacher")
     public Result updateById(@RequestBody Teacher teacher){
         teacherService.updateById(teacher);
         return Result.ok(teacher);
